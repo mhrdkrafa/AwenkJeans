@@ -36,7 +36,7 @@ Sistem informasi berbasis web untuk manajemen toko Awenk Jeans yang mencakup Poi
 
 ```bash
 # 1. Clone repository
-git clone <repository-url>
+git clone https://github.com/mhrdkrafa/AwenkJeans
 cd AwenkJeans
 
 # 2. Install dependensi PHP

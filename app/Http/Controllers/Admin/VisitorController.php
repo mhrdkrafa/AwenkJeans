@@ -29,7 +29,7 @@ class VisitorController extends Controller
             $query->where('page_type', $pageType);
         }
 
-        $views = $query->paginate(20)->withQueryString();
+        $views = $query->paginate(5)->withQueryString();
 
         // Summary stats
         $totalViews = ProductView::count();

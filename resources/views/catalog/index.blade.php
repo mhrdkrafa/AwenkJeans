@@ -39,24 +39,16 @@
         <div class="bg-[#D97706] py-3 overflow-hidden whitespace-nowrap border-y border-amber-700">
             <div class="marquee-content font-black uppercase text-xs md:text-sm tracking-[0.2em] text-white flex">
                 <div class="flex-shrink-0 flex items-center">
-                    <span class="mx-6">SUMMER SALE</span> &bull; 
-                    <span class="mx-6">EXTRA 50% MAN COLLECTION</span> &bull; 
-                    <span class="mx-6">35% OFF NOW</span> &bull; 
-                    <span class="mx-6">NEW ARRIVALS 2026</span> &bull;
-                    <span class="mx-6">SUMMER SALE</span> &bull; 
-                    <span class="mx-6">EXTRA 50% MAN COLLECTION</span> &bull; 
-                    <span class="mx-6">35% OFF NOW</span> &bull; 
-                    <span class="mx-6">NEW ARRIVALS 2026</span> &bull;
+                    <span class="mx-6">Selamat datang di AwenkJeans!</span> &bull; 
+                    <span class="mx-6">Selamat berbelanja dan temukan koleksi favorit Anda</span> &bull; 
+                    <span class="mx-6">Selamat datang di AwenkJeans!</span> &bull; 
+                    <span class="mx-6">Selamat berbelanja dan temukan koleksi favorit Anda</span> &bull; 
                 </div>
                 <div class="flex-shrink-0 flex items-center">
-                    <span class="mx-6">SUMMER SALE</span> &bull; 
-                    <span class="mx-6">EXTRA 50% MAN COLLECTION</span> &bull; 
-                    <span class="mx-6">35% OFF NOW</span> &bull; 
-                    <span class="mx-6">NEW ARRIVALS 2026</span> &bull;
-                    <span class="mx-6">SUMMER SALE</span> &bull; 
-                    <span class="mx-6">EXTRA 50% MAN COLLECTION</span> &bull; 
-                    <span class="mx-6">35% OFF NOW</span> &bull; 
-                    <span class="mx-6">NEW ARRIVALS 2026</span> &bull;
+                    <span class="mx-6">Selamat datang di AwenkJeans!</span> &bull; 
+                    <span class="mx-6">Selamat berbelanja dan temukan koleksi favorit Anda</span> &bull; 
+                    <span class="mx-6">Selamat datang di AwenkJeans!</span> &bull; 
+                    <span class="mx-6">Selamat berbelanja dan temukan koleksi favorit Anda</span> &bull; 
                 </div>
             </div>
         </div>
@@ -93,7 +85,7 @@
             </div>
 
             {{-- Active Filters indicator --}}
-            @if(request()->hasAny(['size', 'min_price', 'max_price', 'gender', 'color']))
+            @if(request()->hasAny(['size', 'min_price', 'max_price', 'gender', 'color', 'brand']))
             <div class="flex flex-wrap items-center gap-2 mb-8 -mt-4">
                 <span class="text-xs text-slate-500 font-bold uppercase tracking-widest">Active Filters:</span>
                 @if(request('size'))
@@ -109,6 +101,11 @@
                 @if(request('color'))
                 <span class="px-3 py-1 bg-white border border-slate-200 text-slate-700 text-[10px] font-bold rounded-full">
                     Warna: {{ request('color') }}
+                </span>
+                @endif
+                @if(request('brand'))
+                <span class="px-3 py-1 bg-white border border-slate-200 text-slate-700 text-[10px] font-bold rounded-full">
+                    Brand: {{ request('brand') }}
                 </span>
                 @endif
                 @if(request('min_price') || request('max_price'))
@@ -287,6 +284,22 @@
                                                     <div class="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-slate-200 rounded-xl cursor-pointer text-slate-500 hover:border-slate-300 peer-checked:border-[#1D4ED8] peer-checked:bg-[#1D4ED8] peer-checked:text-white transition-all">
                                                         <span class="w-3 h-3 rounded-full border border-slate-300 inline-block" style="background-color: {{ $colorOption }}"></span>
                                                         {{ $colorOption }}
+                                                    </div>
+                                                </label>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                        @if($availableBrands->count() > 0)
+                                        <div class="border-t border-slate-100 pt-8">
+                                            <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest mb-4">Brand</h3>
+                                            <div class="flex flex-wrap gap-2">
+                                                @foreach($availableBrands as $brandOption)
+                                                <label class="relative">
+                                                    <input type="radio" name="brand" value="{{ $brandOption }}" class="peer sr-only" {{ request('brand') == $brandOption ? 'checked' : '' }} onchange="document.getElementById('filterForm').submit()">
+                                                    <div class="flex items-center gap-1.5 px-3 py-2 text-sm font-bold border border-slate-200 rounded-xl cursor-pointer text-slate-500 hover:border-slate-300 peer-checked:border-[#1D4ED8] peer-checked:bg-[#1D4ED8] peer-checked:text-white transition-all">
+                                                        {{ $brandOption }}
                                                     </div>
                                                 </label>
                                                 @endforeach

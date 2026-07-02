@@ -108,6 +108,7 @@ Route::middleware(['auth', 'verified', 'role:karyawan'])->prefix('karyawan')->na
     Route::get('/reports/movements', [ReportController::class, 'movements'])->name('reports.movements');
     Route::get('/reports/sales/pdf', [ReportController::class, 'salesPdf'])->name('reports.sales.pdf');
     Route::get('/reports/stock/pdf', [ReportController::class, 'stockPdf'])->name('reports.stock.pdf');
+    Route::get('/reports/movements/pdf', [ReportController::class, 'movementsPdf'])->name('reports.movements.pdf');
 });
 
 // ===================== OWNER ROUTES (View-only: Laporan) =====================
@@ -121,6 +122,7 @@ Route::middleware(['auth', 'verified', 'role:owner'])->prefix('owner')->name('ow
     Route::get('/reports/movements', [ReportController::class, 'movements'])->name('reports.movements');
     Route::get('/reports/sales/pdf', [ReportController::class, 'salesPdf'])->name('reports.sales.pdf');
     Route::get('/reports/stock/pdf', [ReportController::class, 'stockPdf'])->name('reports.stock.pdf');
+    Route::get('/reports/movements/pdf', [ReportController::class, 'movementsPdf'])->name('reports.movements.pdf');
 });
 
 // ===================== ADMINISTRATOR ROUTES (Produk, Kategori, Kelola Akun) =====================

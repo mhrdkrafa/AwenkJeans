@@ -25,7 +25,7 @@ class OrderController extends Controller
             })
             ->where('payment_status', 'paid')
             ->latest()
-            ->paginate(10);
+            ->paginate(5);
 
         return view('pelanggan.orders.index', compact('transactions'));
     }

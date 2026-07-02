@@ -68,6 +68,10 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="mt-4">
+                {{ $transactions->links() }}
+            </div>
         </div>
     </div>
 </x-admin-layout>

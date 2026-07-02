@@ -139,6 +139,18 @@
                 <!-- Right Side Icons -->
                 <div class="flex items-center gap-2 md:gap-4">
                     @auth
+                        {{-- Quick Nav Links for Pelanggan (to the left of user menu) --}}
+                        @if(auth()->user()->role->name === 'pelanggan')
+                            <a href="{{ route('pelanggan.orders') }}" class="px-3 py-2 text-sm font-semibold rounded-xl transition {{ request()->routeIs('pelanggan.orders*') ? 'text-[#1D4ED8] bg-[#1D4ED8]/10' : 'text-slate-500 hover:text-[#1D4ED8] hover:bg-slate-100' }}">
+                                Riwayat Pesanan
+                            </a>
+                            <a href="{{ route('pelanggan.complaints.index') }}" class="px-3 py-2 text-sm font-semibold rounded-xl transition {{ request()->routeIs('pelanggan.complaints*') ? 'text-[#1D4ED8] bg-[#1D4ED8]/10' : 'text-slate-500 hover:text-[#1D4ED8] hover:bg-slate-100' }}">
+                                Komplain Saya
+                            </a>
+
+                            <div class="hidden md:block w-px h-6 bg-slate-200"></div>
+                        @endif
+
                         <!-- User Dropdown Menu -->
                         <div x-data="{ userMenuOpen: false }" class="relative">
                             <button @click="userMenuOpen = !userMenuOpen" @click.outside="userMenuOpen = false" class="flex items-center gap-2 p-2 text-slate-600 hover:text-slate-900 transition rounded-lg">
@@ -164,15 +176,7 @@
                                     </a>
                                 @endif
 
-                                <a href="{{ route('pelanggan.orders') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition font-medium">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-                                    Riwayat Pembelian
-                                </a>
-                                
-                                <a href="{{ route('pelanggan.complaints.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition font-medium">
-                                    <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
-                                    Komplain Saya
-                                </a>
+
                                 
                                 <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition font-medium">
                                     <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
@@ -191,11 +195,14 @@
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="p-2 text-slate-500 hover:text-[#1D4ED8] transition">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </a>
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-bold text-[#1D4ED8] border border-[#1D4ED8] rounded-xl hover:bg-[#1D4ED8] hover:text-white transition">
+                                Masuk
+                            </a>
+                            <a href="{{ route('register') }}" class="hidden sm:inline-flex px-4 py-2 text-sm font-bold text-white bg-[#1D4ED8] rounded-xl hover:bg-[#002d73] transition">
+                                Daftar
+                            </a>
+                        </div>
                     @endauth
 
                     <!-- Mobile Menu Button -->
@@ -322,6 +329,9 @@
                     <a href="{{ route('pelanggan.orders') }}" class="block px-4 py-2 text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50">
                         Riwayat Pembelian
                     </a>
+                    <a href="{{ route('pelanggan.complaints.index') }}" class="block px-4 py-2 text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50">
+                        Komplain Saya
+                    </a>
                     <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-base font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50">
                         Pengaturan Profil
                     </a>
@@ -335,7 +345,7 @@
             </div>
         @else
             <div class="p-4 border-t border-slate-100 flex flex-col gap-2">
-                <a href="{{ route('login') }}" class="w-full text-center px-4 py-2 text-[#1D4ED8] font-bold rounded-xl border border-[#1D4ED8] hover:bg-[#1D4ED8]/5">Login</a>
+                <a href="{{ route('login') }}" class="w-full text-center px-4 py-2 text-[#1D4ED8] font-bold rounded-xl border border-[#1D4ED8] hover:bg-[#1D4ED8]/5">Masuk</a>
                 <a href="{{ route('register') }}" class="w-full text-center px-4 py-2 bg-[#1D4ED8] text-white font-bold rounded-xl hover:bg-blue-800">Daftar</a>
             </div>
         @endauth

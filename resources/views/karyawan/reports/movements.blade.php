@@ -21,11 +21,9 @@
                     <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-[#1D4ED8] px-4 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-[#002d73]">
                         Filter
                     </button>
-                    <!-- Uncomment jika ingin PDF pergerakan:
-                    <a href="#" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50">
+                    <a href="{{ route('karyawan.reports.movements.pdf', ['start_date' => $startDate, 'end_date' => $endDate]) }}" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50">
                         Export PDF
                     </a>
-                    -->
                 </div>
             </form>
         </div>
@@ -81,6 +79,10 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <div class="mt-4">
+                {{ $movements->links() }}
             </div>
         </div>
     </div>

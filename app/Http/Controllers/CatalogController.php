@@ -107,6 +107,7 @@ class CatalogController extends Controller
         $sizes = Size::all();
         $categories = Category::withCount('products')->get();
         $availableColors = Product::whereNotNull('color')->where('color', '!=', '')->distinct()->pluck('color')->sort()->values();
+        $availableBrands = Product::whereNotNull('brand')->where('brand', '!=', '')->distinct()->pluck('brand')->sort()->values();
 
         // Featured Products (Latest 4, grouped)
         $featuredAll = Product::with(['category', 'size'])->latest()->get();
@@ -164,6 +165,7 @@ class CatalogController extends Controller
             'sizes', 
             'categories',
             'availableColors',
+            'availableBrands',
             'featuredProducts', 
             'bestSellers', 
             'recentReviews'

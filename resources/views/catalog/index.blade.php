@@ -53,6 +53,103 @@
             </div>
         </div>
 
+        @if(isset($bestSellers) && $bestSellers->isNotEmpty())
+        {{-- BEST SELLERS / POPULAR PRODUCTS SECTION --}}
+        <div class="bg-gradient-to-b from-white to-slate-50 py-16 border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 text-[11px] font-black text-[#1D4ED8] uppercase tracking-[0.25em] mb-3">
+                            Paling Sering Dilihat
+                        </span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight uppercase">Produk Terpopuler</h2>
+                        <p class="text-xs text-slate-500 mt-1">Produk-produk dengan jumlah kunjungan terbanyak.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                    @foreach($bestSellers as $product)
+                        <div class="group bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col relative">
+                            {{-- Popular Ribbon/Badge --}}
+                            <div class="absolute top-4 right-4 z-10 flex items-center gap-1 rounded-full bg-[#1D4ED8] text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                {{ $product->views_count }} Views
+                            </div>
+
+                            {{-- Image Container --}}
+                            <a href="{{ route('catalog.show', $product->slug) }}" class="relative aspect-[4/5] overflow-hidden bg-slate-100 block">
+                                @if($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                                @else
+                                    <div class="w-full h-full flex flex-col items-center justify-center text-slate-300">
+                                        <svg class="w-12 h-12 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                @endif
+                                
+                                {{-- Hover Actions Overlay --}}
+                                <div class="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+                                    <button class="w-10 h-10 rounded-full bg-white text-slate-900 flex items-center justify-center hover:bg-[#1D4ED8] hover:text-white transition-colors shadow-lg scale-0 group-hover:scale-100 duration-300 delay-75">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                                    </button>
+                                </div>
+                            </a>
+
+                            {{-- Product Info --}}
+                            <div class="p-5 flex flex-col flex-1">
+                                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2">{{ $product->category->name }}</div>
+                                <h3 class="text-base font-black text-slate-900 uppercase tracking-tight mb-2 line-clamp-1 group-hover:text-[#1D4ED8] transition-colors">
+                                    <a href="{{ route('catalog.show', $product->slug) }}">{{ $product->name }}</a>
+                                </h3>
+                                
+                                <div class="flex items-center gap-1 mb-2">
+                                    <span class="text-[10px] text-slate-500 font-semibold mr-1">SIZE:</span>
+                                    @php
+                                        $availableSizes = $product->available_sizes ?? [];
+                                    @endphp
+                                    @forelse(array_slice($availableSizes, 0, 4) as $sz)
+                                        <span class="text-[10px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">{{ $sz }}</span>
+                                    @empty
+                                        <span class="text-[10px] font-bold text-rose-500 bg-rose-50 px-1.5 py-0.5 rounded">Habis</span>
+                                    @endforelse
+                                    @if(count($availableSizes) > 4)
+                                        <span class="text-[10px] font-bold text-slate-500">...</span>
+                                    @endif
+                                </div>
+                                <div class="flex items-center gap-2 mb-4">
+                                    @if($product->color)
+                                        <span class="text-[10px] font-bold text-slate-500 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                            <span class="w-2 h-2 rounded-full bg-[#1D4ED8] inline-block"></span>
+                                            {{ $product->color }}
+                                        </span>
+                                    @endif
+                                    @if($product->gender && $product->gender !== 'unisex')
+                                        <span class="text-[10px] font-bold uppercase tracking-wider {{ $product->gender === 'pria' ? 'text-blue-600 bg-blue-50 border-blue-200' : 'text-pink-600 bg-pink-50 border-pink-200' }} border px-2 py-0.5 rounded-full">
+                                            {{ $product->gender }}
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="mt-auto flex items-center justify-between">
+                                    <div>
+                                        <div class="text-lg font-black text-slate-900">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                                    </div>
+                                    <a href="{{ route('catalog.show', $product->slug) }}" class="w-8 h-8 rounded-full bg-slate-100 text-slate-900 flex items-center justify-center hover:bg-[#1D4ED8] hover:text-white transition-colors">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endif
+
         {{-- CATALOG SECTION --}}
         <div id="catalog-grid" class="max-w-7xl mx-auto px-4 py-20 relative">
             

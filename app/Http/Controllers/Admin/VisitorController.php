@@ -34,7 +34,7 @@ class VisitorController extends Controller
         // Summary stats
         $totalViews = ProductView::count();
         $todayViews = ProductView::whereDate('created_at', today())->count();
-        $uniqueVisitors = ProductView::distinct('ip_address')->count('ip_address');
+        $uniqueVisitors = DB::table('product_views')->distinct()->count(DB::raw('COALESCE(visitor_uuid, ip_address)'));
         $uniqueProducts = ProductView::whereNotNull('product_id')->distinct('product_id')->count('product_id');
 
         // Weekly visitor chart data (last 7 days)
@@ -42,9 +42,10 @@ class VisitorController extends Controller
         for ($i = 6; $i >= 0; $i--) {
             $date = now()->subDays($i);
             $count = ProductView::whereDate('created_at', $date->toDateString())->count();
-            $uniqueCount = ProductView::whereDate('created_at', $date->toDateString())
-                ->distinct('ip_address')
-                ->count('ip_address');
+            $uniqueCount = DB::table('product_views')
+                ->whereDate('created_at', $date->toDateString())
+                ->distinct()
+                ->count(DB::raw('COALESCE(visitor_uuid, ip_address)'));
             $weeklyData->push([
                 'label' => $date->translatedFormat('D'),
                 'full_label' => $date->translatedFormat('d M'),
@@ -55,7 +56,7 @@ class VisitorController extends Controller
 
         // Top viewed products
         $topProducts = ProductView::whereNotNull('product_id')
-            ->select('product_id', DB::raw('COUNT(*) as total_views'), DB::raw('COUNT(DISTINCT ip_address) as unique_views'))
+            ->select('product_id', DB::raw('COUNT(*) as total_views'), DB::raw('COUNT(DISTINCT COALESCE(visitor_uuid, ip_address)) as unique_views'))
             ->groupBy('product_id')
             ->orderByDesc('total_views')
             ->with('product')

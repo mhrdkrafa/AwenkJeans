@@ -229,7 +229,19 @@ class CatalogController extends Controller
 
     public function show($slug)
     {
-        $product = Product::with(['category', 'size', 'reviews.user'])->where('slug', $slug)->firstOrFail();
+        $product = Product::with(['category', 'size'])->where('slug', $slug)->firstOrFail();
+
+        // Fetch all reviews for all size variants of this product name
+        $variantIds = Product::where('name', $product->name)
+            ->where('category_id', $product->category_id)
+            ->pluck('id');
+
+        $reviews = \App\Models\Review::with(['user', 'product.size'])
+            ->whereIn('product_id', $variantIds)
+            ->latest()
+            ->get();
+
+        $product->setRelation('reviews', $reviews);
 
         // Related Products (Same category, excluding current product AND its size variants)
         $relatedAll = Product::with(['category', 'size'])
@@ -263,20 +275,39 @@ class CatalogController extends Controller
      */
     private function trackVisit(Request $request, ?int $productId, string $pageType): void
     {
+        $visitorUuid = $request->cookie('visitor_uuid');
+
+        if (!$visitorUuid) {
+            $visitorUuid = (string) \Illuminate\Support\Str::uuid();
+            \Illuminate\Support\Facades\Cookie::queue('visitor_uuid', $visitorUuid, 60 * 24 * 365 * 5); // 5 years
+        }
+
+        // Prevent reload spamming: only log unique views per visitor/product every 15 minutes
+        $exists = ProductView::where('visitor_uuid', $visitorUuid)
+            ->where('product_id', $productId)
+            ->where('page_type', $pageType)
+            ->where('created_at', '>=', now()->subMinutes(15))
+            ->exists();
+
+        if ($exists) {
+            return;
+        }
+
         $sessionId = session()->getId();
         $ipAddress = $request->ip();
         $userAgent = $request->userAgent();
         $userId = Auth::id(); // null for anonymous visitors
 
-        // Create a new view log entry for each visit
+        // Create a new view log entry for each unique visit
         ProductView::create([
-            'user_id'    => $userId,
-            'product_id' => $productId,
-            'session_id' => $sessionId,
-            'ip_address' => $ipAddress,
-            'user_agent' => $userAgent,
-            'page_type'  => $pageType,
-            'view_count' => 1,
+            'user_id'      => $userId,
+            'product_id'   => $productId,
+            'session_id'   => $sessionId,
+            'visitor_uuid' => $visitorUuid,
+            'ip_address'   => $ipAddress,
+            'user_agent'   => $userAgent,
+            'page_type'    => $pageType,
+            'view_count'   => 1,
         ]);
     }
 }

@@ -10,6 +10,7 @@ class ProductView extends Model
         'user_id',
         'product_id',
         'session_id',
+        'visitor_uuid',
         'ip_address',
         'user_agent',
         'page_type',

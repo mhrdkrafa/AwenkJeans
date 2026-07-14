@@ -327,11 +327,35 @@
         </div>
 
         {{-- Reviews Section --}}
-        <div id="reviews" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        @php
+            $reviewSizes = $product->reviews->map(function($r) {
+                return $r->product->size->name ?? null;
+            })->filter()->unique()->sort();
+        @endphp
+        <div id="reviews" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20" x-data="{ activeReviewSize: 'all' }">
             <div class="border-t border-slate-200 pt-16">
-                <div class="mb-10">
-                    <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Ulasan Pelanggan</h2>
-                    <p class="text-xs text-slate-500 mt-1">Lihat testimonial asli dan ulasan produk dari pelanggan setia Awenk Jeans.</p>
+                <div class="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Ulasan Pelanggan</h2>
+                        <p class="text-xs text-slate-500 mt-1">Lihat testimonial asli dan ulasan produk dari pelanggan setia Awenk Jeans.</p>
+                    </div>
+
+                    @if($reviewSizes->isNotEmpty())
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Filter Ukuran:</span>
+                        <select x-model="activeReviewSize" class="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 focus:border-[#1D4ED8] focus:ring-[#1D4ED8] outline-none cursor-pointer">
+                            <option value="all">Semua Ukuran ({{ $product->reviews->count() }})</option>
+                            @foreach($reviewSizes as $szName)
+                                @php
+                                    $szCount = $product->reviews->filter(function($r) use ($szName) {
+                                        return ($r->product->size->name ?? '') === $szName;
+                                    })->count();
+                                @endphp
+                                <option value="{{ $szName }}">Ukuran {{ $szName }} ({{ $szCount }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -373,7 +397,8 @@
                         {{-- Review List --}}
                         <div class="space-y-4 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-[#333] scrollbar-track-[#1a1a1a]">
                             @forelse ($product->reviews as $review)
-                                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition hover:shadow-md">
+                                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition hover:shadow-md"
+                                     x-show="activeReviewSize === 'all' || activeReviewSize === '{{ $review->product->size->name ?? '' }}'">
                                     <div class="flex items-center justify-between mb-4">
                                         <div class="flex items-center gap-3">
                                             @php
@@ -385,8 +410,15 @@
                                                 {{ $initial }}
                                             </div>
                                             <div>
-                                                <p class="text-sm font-bold text-slate-900 leading-none">{{ $reviewerName }}</p>
-                                                <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest font-semibold font-sans">{{ $review->created_at->diffForHumans() }}</p>
+                                                <div class="flex items-center gap-2">
+                                                    <p class="text-sm font-bold text-slate-900 leading-none">{{ $reviewerName }}</p>
+                                                    @if(optional(optional($review->product)->size)->name)
+                                                        <span class="inline-flex items-center rounded bg-slate-100 px-1.5 py-0.5 text-[9px] font-bold text-slate-700 uppercase tracking-wider">
+                                                            Ukuran: {{ $review->product->size->name }}
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                                <p class="text-[10px] text-slate-500 mt-1.5 uppercase tracking-widest font-semibold font-sans">{{ $review->created_at->diffForHumans() }}</p>
                                             </div>
                                         </div>
                                         <div class="flex text-[#1D4ED8]">

@@ -14,22 +14,34 @@
 
                 {{-- Complaint Deadline Notice --}}
                 @php
-                    $daysSincePurchase = $transaction->created_at->diffInDays(now());
-                    $daysRemaining = max(0, 3 - $daysSincePurchase);
+                    $transactionDate = $transaction->created_at;
+                    $deadlineDate = $transactionDate->copy()->addDays(3);
+                    $now = now();
+                    $deadlinePassed = $now->greaterThan($deadlineDate);
                 @endphp
-                @if($daysSincePurchase <= 3)
-                    <div class="rounded-xl border border-blue-200 bg-blue-50 px-5 py-3 flex items-center gap-3">
-                        <svg class="h-5 w-5 text-[#1D4ED8] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <p class="text-sm text-blue-800 font-medium">
-                            Anda masih memiliki <strong>{{ $daysRemaining }} hari</strong> untuk mengajukan komplain pada transaksi ini.
-                        </p>
+                @if(!$deadlinePassed)
+                    <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-4 flex items-start gap-3">
+                        <svg class="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <div>
+                            <p class="text-sm font-bold text-emerald-800">Komplain Dalam Batas Waktu</p>
+                            <p class="text-xs text-emerald-600 mt-0.5">
+                                Transaksi: <strong>{{ $transactionDate->translatedFormat('d F Y, H:i') }}</strong><br>
+                                Batas komplain: <strong>{{ $deadlineDate->translatedFormat('d F Y, H:i') }}</strong><br>
+                                Sisa waktu: <strong>{{ $now->diffForHumans($deadlineDate, ['parts' => 2, 'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE]) }}</strong> lagi
+                            </p>
+                        </div>
                     </div>
                 @else
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 px-5 py-3 flex items-center gap-3">
-                        <svg class="h-5 w-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <p class="text-sm text-slate-500 font-medium">
-                            Batas waktu komplain (3 hari) telah berakhir untuk transaksi ini.
-                        </p>
+                    <div class="rounded-xl border border-rose-200 bg-rose-50 px-5 py-4 flex items-start gap-3">
+                        <svg class="h-5 w-5 text-rose-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
+                        <div>
+                            <p class="text-sm font-bold text-rose-800">Batas Waktu Komplain Telah Berakhir</p>
+                            <p class="text-xs text-rose-600 mt-0.5">
+                                Transaksi: <strong>{{ $transactionDate->translatedFormat('d F Y, H:i') }}</strong><br>
+                                Batas komplain: <strong>{{ $deadlineDate->translatedFormat('d F Y, H:i') }}</strong><br>
+                                Batas waktu komplain (3 hari) telah berakhir untuk transaksi ini.
+                            </p>
+                        </div>
                     </div>
                 @endif
 

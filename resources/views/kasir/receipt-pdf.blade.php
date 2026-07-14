@@ -68,7 +68,7 @@
         <!-- Header -->
         <div class="header">
             <h1>AWENK JEANS</h1>
-            <p>Jl. Contoh Alamat No. 123, Kota</p>
+            <p>Jl. Raya Plumpang Semper No. 86 RT15 RW 4, Kel. Rawa Badak Selatan, Kec. Koja, Jakarta Utara 14230.</p>
             <p>Telp: 0812-3456-7890</p>
         </div>
 

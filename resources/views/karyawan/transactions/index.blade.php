@@ -23,11 +23,8 @@
         </div>
 
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div class="mb-6 flex items-center justify-between">
+            <div class="mb-6">
                 <h3 class="text-lg font-bold text-slate-900">Riwayat Transaksi</h3>
-                <a href="{{ route('karyawan.reports.sales') }}" class="inline-flex items-center justify-center rounded-xl bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100">
-                    Export Laporan Penjualan
-                </a>
             </div>
 
             <div class="overflow-x-auto">

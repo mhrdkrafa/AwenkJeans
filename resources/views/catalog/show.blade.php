@@ -2,7 +2,7 @@
     @php
         $reviews = $product->reviews;
         $totalReviews = $reviews->count();
-        $avgRating = $totalReviews > 0 ? round($reviews->avg('rating'), 1) : 4.8;
+        $avgRating = $totalReviews > 0 ? round($reviews->avg('rating'), 1) : 0;
         
         // Rating distribution
         $distribution = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
@@ -20,7 +20,7 @@
                 $distributionPercent[$stars] = round(($count / $totalReviews) * 100);
             }
         } else {
-            $distributionPercent = [5 => 82, 4 => 12, 3 => 4, 2 => 1, 1 => 1];
+            $distributionPercent = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
         }
 
         // Fetch sibling products of the same name+category to dynamically link sizes

@@ -13,16 +13,20 @@
             
             <div class="flex-1 overflow-y-auto p-6">
                 <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
-                    <template x-for="product in filteredProducts" :key="product.id">
+                    <template x-for="group in filteredGroups" :key="group.name">
                         <div 
-                            @click="addToCart(product)"
-                            class="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-[#003B95] hover:shadow-md"
+                            x-data="{ selectedVariant: group.variants[0] }"
+                            class="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-[#003B95] hover:shadow-md"
                         >
-                            <div class="aspect-square bg-slate-50 relative">
-                                <template x-if="product.image">
-                                    <img :src="`/storage/${product.image}`" class="h-full w-full object-cover" :alt="product.name">
+                            <!-- Product Image (clickable to add to cart) -->
+                            <div 
+                                @click="addToCart(selectedVariant)"
+                                class="aspect-square bg-slate-50 relative cursor-pointer"
+                            >
+                                <template x-if="selectedVariant.image">
+                                    <img :src="`/storage/${selectedVariant.image}`" class="h-full w-full object-cover" :alt="selectedVariant.name">
                                 </template>
-                                <template x-if="!product.image">
+                                <template x-if="!selectedVariant.image">
                                     <div class="flex h-full w-full items-center justify-center text-slate-500">
                                         <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                     </div>
@@ -31,21 +35,48 @@
                                 <div class="absolute inset-0 bg-[#1D4ED8]/0 transition group-hover:bg-[#1D4ED8]/10"></div>
                                 
                                 <span class="absolute right-2 top-2 rounded-lg bg-white/90 px-2 py-1 text-xs font-bold text-[#1D4ED8] shadow-sm backdrop-blur-sm">
-                                    Sisa <span x-text="product.stock"></span>
+                                    Sisa <span x-text="selectedVariant.stock"></span>
                                 </span>
                             </div>
                             <div class="p-4 flex flex-col flex-1 justify-between">
                                 <div>
-                                    <h3 class="font-bold text-slate-900 text-sm line-clamp-2" x-text="product.name"></h3>
-                                    <p class="text-xs text-slate-500 mt-1"><span x-text="product.category_name"></span> <span x-show="product.size_name">/ <span x-text="product.size_name"></span></span></p>
+                                    <h3 class="font-bold text-slate-900 text-sm line-clamp-2" x-text="group.name"></h3>
+                                    <p class="text-xs text-slate-500 mt-1" x-text="selectedVariant.category_name"></p>
                                 </div>
-                                <p class="mt-3 font-bold text-emerald-600 text-sm" x-text="'Rp ' + formatRupiah(product.price)"></p>
+
+                                <!-- Size Selector -->
+                                <div class="mt-2" x-show="group.variants.length > 1">
+                                    <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Ukuran</p>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        <template x-for="variant in group.variants" :key="variant.id">
+                                            <button 
+                                                type="button"
+                                                @click.stop="selectedVariant = variant"
+                                                class="min-w-[32px] h-7 px-2 flex items-center justify-center rounded-lg text-xs font-bold transition-all"
+                                                :class="selectedVariant.id === variant.id 
+                                                    ? 'bg-[#1D4ED8] text-white shadow-sm' 
+                                                    : (variant.stock > 0 ? 'bg-slate-100 text-slate-600 hover:bg-slate-200' : 'bg-slate-50 text-slate-300 line-through cursor-not-allowed')"
+                                                :disabled="variant.stock <= 0"
+                                                x-text="variant.size_name"
+                                            ></button>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- Single size indicator -->
+                                <div class="mt-2" x-show="group.variants.length === 1 && group.variants[0].size_name">
+                                    <span class="inline-flex items-center rounded-lg bg-slate-100 px-2 py-1 text-xs font-bold text-slate-600">
+                                        Size <span x-text="group.variants[0].size_name" class="ml-1"></span>
+                                    </span>
+                                </div>
+
+                                <p class="mt-2 font-bold text-emerald-600 text-sm" x-text="'Rp ' + formatRupiah(selectedVariant.price)"></p>
                             </div>
                         </div>
                     </template>
                 </div>
                 
-                <div x-show="filteredProducts.length === 0" class="flex flex-col items-center justify-center py-12 text-center" style="display: none;">
+                <div x-show="filteredGroups.length === 0" class="flex flex-col items-center justify-center py-12 text-center" style="display: none;">
                     <div class="rounded-full bg-slate-50 p-4 mb-4 text-slate-500">
                         <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     </div>
@@ -155,7 +186,10 @@
                             <input type="hidden" :name="`items[${index}][qty]`" :value="item.qty">
 
                             <div class="flex-1 min-w-0">
-                                <h4 class="font-bold text-slate-900 text-sm truncate" x-text="item.name"></h4>
+                                <div class="flex items-center gap-2">
+                                    <h4 class="font-bold text-slate-900 text-sm truncate" x-text="item.name"></h4>
+                                    <span x-show="item.size_name" class="shrink-0 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-500" x-text="item.size_name"></span>
+                                </div>
                                 <p class="text-xs font-semibold text-[#1D4ED8] mt-1" x-text="'Rp ' + formatRupiah(item.price)"></p>
                             </div>
                             
@@ -313,13 +347,39 @@
                     this.filteredCustomers = this.allCustomers;
                 },
 
-                get filteredProducts() {
-                    if (this.searchQuery === '') {
-                        return this.products;
-                    }
-                    return this.products.filter(product => {
-                        return product.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+                // Group products by name for the product grid
+                groupProducts(products) {
+                    const groups = {};
+                    products.forEach(p => {
+                        if (!groups[p.name]) {
+                            groups[p.name] = {
+                                name: p.name,
+                                category_name: p.category_name,
+                                image: p.image,
+                                variants: []
+                            };
+                        }
+                        groups[p.name].variants.push(p);
                     });
+                    // Sort variants by size_name numerically
+                    Object.values(groups).forEach(g => {
+                        g.variants.sort((a, b) => {
+                            const numA = parseInt(a.size_name) || 0;
+                            const numB = parseInt(b.size_name) || 0;
+                            return numA - numB;
+                        });
+                    });
+                    return Object.values(groups);
+                },
+
+                get filteredGroups() {
+                    let products = this.products;
+                    if (this.searchQuery !== '') {
+                        products = products.filter(p =>
+                            p.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                        );
+                    }
+                    return this.groupProducts(products);
                 },
 
                 get cartTotal() {

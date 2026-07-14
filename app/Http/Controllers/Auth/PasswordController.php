@@ -20,6 +20,13 @@ class PasswordController extends Controller
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
+        // Prevent reusing the current password as the new password
+        if (Hash::check($validated['password'], $request->user()->password)) {
+            return back()->withErrors([
+                'password' => __('Password baru tidak boleh sama dengan password yang sedang digunakan. Silakan gunakan password yang berbeda.'),
+            ], 'updatePassword');
+        }
+
         $request->user()->update([
             'password' => Hash::make($validated['password']),
         ]);

@@ -78,6 +78,12 @@ class UserController extends Controller
         ]);
 
         if ($request->filled('password')) {
+            // Prevent reusing the same password
+            if (Hash::check($request->password, $user->password)) {
+                return back()->withErrors([
+                    'password' => 'Password baru tidak boleh sama dengan password yang sedang digunakan. Silakan gunakan password yang berbeda.',
+                ])->withInput();
+            }
             $user->update(['password' => Hash::make($request->password)]);
         }
 

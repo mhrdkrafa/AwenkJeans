@@ -13,9 +13,6 @@
                 <a href="{{ route('karyawan.stock.index') }}" class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-50">
                     Kembali ke Stok
                 </a>
-                <a href="{{ route('karyawan.reports.movements') }}" class="inline-flex items-center justify-center rounded-xl bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100">
-                    Laporan Pergerakan
-                </a>
             </div>
         </div>
 

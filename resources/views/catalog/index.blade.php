@@ -143,12 +143,7 @@
                                     </div>
                                 @endif
 
-                                {{-- Sale Badge --}}
-                                @if(rand(0,1))
-                                    <div class="absolute top-4 left-4 px-3 py-1 bg-[#D97706] text-white text-[10px] font-black uppercase tracking-widest rounded-full z-10 shadow-lg shadow-amber-900/20">
-                                        Sale
-                                    </div>
-                                @endif
+
                                 
                                 {{-- Hover Actions Overlay --}}
                                 <div class="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
@@ -195,12 +190,7 @@
 
                                 <div class="mt-auto flex items-center justify-between">
                                     <div>
-                                        @if(rand(0,1))
-                                            <span class="text-xs text-slate-400 line-through mr-2">Rp {{ number_format($product->price * 1.3, 0, ',', '.') }}</span>
-                                            <div class="text-lg font-black text-[#D97706]">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                                        @else
-                                            <div class="text-lg font-black text-slate-900">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                                        @endif
+                                        <div class="text-lg font-black text-slate-900">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
                                     </div>
                                     <a href="{{ route('catalog.show', $product->slug) }}" class="w-8 h-8 rounded-full bg-slate-100 text-slate-900 flex items-center justify-center hover:bg-[#1D4ED8] hover:text-white transition-colors">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>

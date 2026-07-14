@@ -28,6 +28,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if ($request->user()->isPelanggan()) {
+            return redirect()->route('catalog.index');
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

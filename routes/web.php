@@ -55,7 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         } elseif ($user->isOwner()) {
             return redirect()->route('owner.dashboard');
         } elseif ($user->isPelanggan()) {
-            return redirect()->route('pelanggan.orders');
+            return redirect()->route('catalog.index');
         }
         return redirect()->route('catalog.index');
     })->name('dashboard');

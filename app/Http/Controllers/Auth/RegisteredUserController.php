@@ -34,8 +34,11 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required', 'string', 'max:20'],
+            'phone' => ['required', 'string', 'max:20', 'unique:users,phone'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'email.unique' => 'Email sudah terdaftar. Silakan gunakan email lain.',
+            'phone.unique' => 'Nomor telepon sudah terdaftar. Silakan gunakan nomor lain.',
         ]);
 
         // Pelanggan otomatis mendapat role pelanggan saat register
@@ -51,8 +54,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('login')->with('status', 'Registrasi berhasil. Silakan login menggunakan akun Anda.');
     }
 }

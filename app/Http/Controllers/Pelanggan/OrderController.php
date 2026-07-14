@@ -20,7 +20,10 @@ class OrderController extends Controller
                 $query->where('pelanggan_id', Auth::id());
                 
                 if (!empty($userPhone)) {
-                    $query->orWhere('customer_phone', $userPhone);
+                    $query->orWhere(function($subQuery) use ($userPhone) {
+                        $subQuery->whereNull('pelanggan_id')
+                                 ->where('customer_phone', $userPhone);
+                    });
                 }
             })
             ->where('payment_status', 'paid')
@@ -35,10 +38,10 @@ class OrderController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        // Pastikan transaksi milik pelanggan yang sedang login (via pelanggan_id atau nomor telepon)
+        // Pastikan transaksi milik pelanggan yang sedang login (via pelanggan_id atau nomor telepon guest)
         $userPhone = Auth::user()->phone;
         $isOwner = $transaction->pelanggan_id === Auth::id() || 
-                   (!empty($userPhone) && $transaction->customer_phone === $userPhone);
+                   ($transaction->pelanggan_id === null && !empty($userPhone) && $transaction->customer_phone === $userPhone);
 
         if (!$isOwner) {
             abort(403, 'Unauthorized.');

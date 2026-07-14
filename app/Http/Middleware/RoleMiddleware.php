@@ -27,7 +27,7 @@ class RoleMiddleware
             } elseif ($userRole === 'owner') {
                 return redirect()->route('owner.dashboard');
             } elseif ($userRole === 'pelanggan') {
-                return redirect()->route('pelanggan.orders');
+                return redirect()->route('catalog.index');
             }
 
             abort(403, 'Unauthorized.');

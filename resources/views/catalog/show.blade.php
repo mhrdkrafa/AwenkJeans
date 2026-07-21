@@ -72,7 +72,7 @@
             return '{{ $product->slug }}';
         },
         get waLink() {
-            return 'https://wa.me/628123456789?text=Halo%20Awenk%20Jeans,%20saya%20tertarik%20dengan%20produk%20' + encodeURIComponent('{{ $product->name }}') + ' (Ukuran: ' + encodeURIComponent(this.selectedSize) + ')';
+            return 'https://wa.me/6281386016213?text=Halo%20Awenk%20Jeans,%20saya%20tertarik%20dengan%20produk%20' + encodeURIComponent('{{ $product->name }}') + ' (Ukuran: ' + encodeURIComponent(this.selectedSize) + ')';
         }
     }">
         {{-- Breadcrumbs & Top Section --}}

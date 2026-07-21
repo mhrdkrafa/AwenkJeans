@@ -70,7 +70,8 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     @foreach($bestSellers as $product)
                         <div class="group bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col relative">
-                            {{-- Popular Ribbon/Badge --}}
+                            {{-- Popular Ribbon/Badge (only show if >= 25 views) --}}
+                            @if($product->views_count >= 25)
                             <div class="absolute top-4 right-4 z-10 flex items-center gap-1 rounded-full bg-[#1D4ED8] text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -78,6 +79,7 @@
                                 </svg>
                                 {{ $product->views_count }} Views
                             </div>
+                            @endif
 
                             {{-- Image Container --}}
                             <a href="{{ route('catalog.show', $product->slug) }}" class="relative aspect-[4/5] overflow-hidden bg-slate-100 block">
@@ -468,7 +470,7 @@
                             </div>
                             <div class="flex-1">
                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">WhatsApp</p>
-                                <p class="text-[15px] font-bold text-slate-900 leading-snug mb-1">+62 812-3456-7890</p>
+                                <p class="text-[15px] font-bold text-slate-900 leading-snug mb-1">+62 813-8601-6213</p>
                                 <p class="text-[13px] text-slate-500 leading-relaxed">Gunakan WhatsApp untuk konsultasi danpenjadwalan layanan.</p>
                             </div>
                         </div>

@@ -75,11 +75,11 @@
                 <span class="text-xs text-slate-500 group-hover:text-slate-700 transition duration-200">{{ __('Ingat saya') }}</span>
             </label>
 
-            @if (Route::has('password.request'))
+            <!-- @if (Route::has('password.request'))
                 <a class="text-xs text-indigo-600 hover:text-indigo-700 font-semibold transition duration-200" href="{{ route('password.request') }}">
                     {{ __('Lupa password?') }}
                 </a>
-            @endif
+            @endif -->
         </div>
 
         <!-- Submit Button -->

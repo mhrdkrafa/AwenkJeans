@@ -69,7 +69,7 @@
         <div class="header">
             <h1>AWENK JEANS</h1>
             <p>Jl. Raya Plumpang Semper No. 86 RT15 RW 4, Kel. Rawa Badak Selatan, Kec. Koja, Jakarta Utara 14230.</p>
-            <p>Telp: 0812-3456-7890</p>
+            <p>Telp: 0813-8601-6213</p>
         </div>
 
         <!-- Invoice Info -->

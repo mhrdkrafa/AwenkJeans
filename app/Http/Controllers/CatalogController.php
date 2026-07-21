@@ -128,7 +128,7 @@ class CatalogController extends Controller
             return $rep;
         })->values()->take(4);
 
-        // Best Sellers (Most viewed, grouped)
+        // Best Sellers (Most viewed, grouped - only show products with >= 25 views)
         $bestAll = Product::with(['category', 'size'])
             ->withCount('views')
             ->orderBy('views_count', 'desc')
@@ -138,6 +138,7 @@ class CatalogController extends Controller
         })->map(function ($variants) {
             $rep = $variants->sortByDesc('views_count')->first();
             $rep->total_stock = $variants->sum('stock');
+            $rep->views_count = $variants->sum('views_count');
             $rep->available_sizes = $variants->filter(function ($v) {
                 return $v->stock > 0;
             })->map(function ($v) {
@@ -148,7 +149,9 @@ class CatalogController extends Controller
                 if ($withImage) $rep->image = $withImage->image;
             }
             return $rep;
-        })->values()->take(4);
+        })->filter(function ($product) {
+            return $product->views_count >= 25;
+        })->sortByDesc('views_count')->values()->take(4);
 
         // Recent Reviews for Social Proof
         $recentReviews = \App\Models\Review::with(['user', 'product'])

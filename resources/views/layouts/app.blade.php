@@ -89,11 +89,11 @@
                                     </a>
                                 </li>
                                 <li class="flex items-start gap-3">
-                                    <a href="https://wa.me/6281234567890" target="_blank" class="flex items-start gap-3 group">
+                                    <a href="https://wa.me/6281386016213" target="_blank" class="flex items-start gap-3 group">
                                         <div class="w-8 h-8 rounded-lg bg-[#D97706]/10 border border-[#D97706]/20 flex items-center justify-center text-[#D97706] shrink-0 group-hover:bg-[#D97706] group-hover:text-white transition-all">
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                                         </div>
-                                        <span class="text-sm text-slate-400 font-medium mt-1 group-hover:text-[#D97706] transition-colors">+62 812-3456-7890</span>
+                                        <span class="text-sm text-slate-400 font-medium mt-1 group-hover:text-[#D97706] transition-colors">+62 813-8601-6213</span>
                                     </a>
                                 </li>
                             </ul>

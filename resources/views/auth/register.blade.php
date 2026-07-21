@@ -46,7 +46,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                 </div>
-                <input id="phone" class="block w-full bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 rounded-2xl text-xs pl-12 pr-4 py-3.5 transition-all duration-300 outline-none" type="text" name="phone" value="{{ old('phone') }}" required autocomplete="tel" placeholder="08123456789" />
+                <input id="phone" class="block w-full bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 rounded-2xl text-xs pl-12 pr-4 py-3.5 transition-all duration-300 outline-none" type="text" name="phone" value="{{ old('phone') }}" required autocomplete="tel" placeholder="081386016213" />
             </div>
             <x-input-error :messages="$errors->get('phone')" class="mt-2 pl-1 text-rose-600 text-2xs font-semibold" />
         </div>

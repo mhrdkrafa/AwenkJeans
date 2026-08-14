@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Size;
+use App\Models\Brand;
+use App\Models\ProductModel;
+use App\Models\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +17,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $allProducts = Product::with(['category', 'size'])->latest()->get();
+        $allProducts = Product::with(['category', 'size', 'brandRelation', 'modelRelation', 'colorRelation'])->latest()->get();
 
         // Group products by name + category_id
         $grouped = $allProducts->groupBy(function ($product) {
@@ -65,7 +68,10 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $sizes = Size::all();
-        return view('administrator.products.create', compact('categories', 'sizes'));
+        $brands = Brand::all();
+        $models = ProductModel::all();
+        $colors = Color::all();
+        return view('administrator.products.create', compact('categories', 'sizes', 'brands', 'models', 'colors'));
     }
 
     public function store(Request $request)
@@ -77,6 +83,9 @@ class ProductController extends Controller
             $data['image'] = $request->file('image')->store('products', 'public');
         }
 
+        $data['stock'] = 0;
+        $data['min_stock'] = 0;
+
         Product::create($data);
 
         return redirect()->route('administrator.products.index')->with('success', 'Produk berhasil ditambahkan.');
@@ -84,7 +93,7 @@ class ProductController extends Controller
 
     public function show(string $id)
     {
-        $product = Product::with(['category', 'size'])->findOrFail($id);
+        $product = Product::with(['category', 'size', 'brandRelation', 'modelRelation', 'colorRelation'])->findOrFail($id);
         return view('administrator.products.show', compact('product'));
     }
 
@@ -93,7 +102,10 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $categories = Category::all();
         $sizes = Size::all();
-        return view('administrator.products.edit', compact('product', 'categories', 'sizes'));
+        $brands = Brand::all();
+        $models = ProductModel::all();
+        $colors = Color::all();
+        return view('administrator.products.edit', compact('product', 'categories', 'sizes', 'brands', 'models', 'colors'));
     }
 
     public function update(Request $request, string $id)
@@ -117,6 +129,9 @@ class ProductController extends Controller
             }
             $data['image'] = null;
         }
+
+        // Jangan update stock dan min_stock — itu dikelola karyawan di manajemen stok
+        unset($data['stock'], $data['min_stock']);
 
         $product->update($data);
 
@@ -143,18 +158,37 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'size_id' => 'nullable|exists:sizes,id',
-            'brand' => 'nullable|string|max:255',
-            'model' => 'nullable|string|max:255',
+            'brand_id' => 'nullable|exists:brands,id',
+            'model_id' => 'nullable|exists:product_models,id',
+            'color_id' => 'nullable|exists:colors,id',
             'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'min_stock' => 'nullable|integer|min:0',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'gender' => 'nullable|in:pria,wanita,unisex',
-            'color' => 'nullable|string|max:100',
         ]);
 
-        // Remove 'image' from validated since we handle it separately
+        // Populate text fields from selected entities
+        if (!empty($validated['brand_id'])) {
+            $b = Brand::find($validated['brand_id']);
+            $validated['brand'] = $b ? $b->name : null;
+        } else {
+            $validated['brand'] = null;
+        }
+
+        if (!empty($validated['model_id'])) {
+            $m = ProductModel::find($validated['model_id']);
+            $validated['model'] = $m ? $m->name : null;
+        } else {
+            $validated['model'] = null;
+        }
+
+        if (!empty($validated['color_id'])) {
+            $c = Color::find($validated['color_id']);
+            $validated['color'] = $c ? $c->name : null;
+        } else {
+            $validated['color'] = null;
+        }
+
         unset($validated['image']);
 
         $slug = Str::slug($validated['name']);
@@ -170,7 +204,6 @@ class ProductController extends Controller
         }
 
         $validated['slug'] = $slug;
-        $validated['min_stock'] = $validated['min_stock'] ?? 5;
 
         return $validated;
     }

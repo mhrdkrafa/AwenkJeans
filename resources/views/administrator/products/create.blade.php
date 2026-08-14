@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div>
             <h2 class="text-xl font-semibold leading-tight text-slate-900">Tambah Produk</h2>
-            <p class="mt-1 text-sm text-slate-500">Tambahkan produk baru ke katalog dan atur stok awalnya.</p>
+            <p class="mt-1 text-sm text-slate-500">Tambahkan produk baru ke katalog. Stok dikelola oleh karyawan di manajemen stok.</p>
         </div>
     </x-slot>
 
@@ -85,16 +85,25 @@
 
                     <div class="grid gap-6 md:grid-cols-2">
                         <div>
-                            <label for="brand" class="block text-sm font-semibold text-slate-700">Merek</label>
-                            <input id="brand" type="text" name="brand" value="{{ old('brand') }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                            <label for="brand_id" class="block text-sm font-semibold text-slate-700">Merek (Brand)</label>
+                            <select id="brand_id" name="brand_id" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                                <option value="">Pilih Merek</option>
+                                @foreach ($brands as $brandItem)
+                                    <option value="{{ $brandItem->id }}" @selected(old('brand_id') == $brandItem->id)>{{ $brandItem->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div>
-                            <label for="model" class="block text-sm font-semibold text-slate-700">Model</label>
-                            <input id="model" type="text" name="model" value="{{ old('model') }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
-                        </div>
-                    </div>
 
-                    <div class="grid gap-6 md:grid-cols-2">
+                        <div>
+                            <label for="model_id" class="block text-sm font-semibold text-slate-700">Model Produk</label>
+                            <select id="model_id" name="model_id" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                                <option value="">Pilih Model</option>
+                                @foreach ($models as $modelItem)
+                                    <option value="{{ $modelItem->id }}" @selected(old('model_id') == $modelItem->id)>{{ $modelItem->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div>
                             <label for="gender" class="block text-sm font-semibold text-slate-700">Jenis Kelamin</label>
                             <select id="gender" name="gender" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
@@ -103,25 +112,21 @@
                                 <option value="wanita" @selected(old('gender') == 'wanita')>Wanita</option>
                             </select>
                         </div>
+
                         <div>
-                            <label for="color" class="block text-sm font-semibold text-slate-700">Warna</label>
-                            <input id="color" type="text" name="color" value="{{ old('color') }}" placeholder="Contoh: Biru Tua, Hitam, Abu-abu" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                            <label for="color_id" class="block text-sm font-semibold text-slate-700">Warna</label>
+                            <select id="color_id" name="color_id" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                                <option value="">Pilih Warna</option>
+                                @foreach ($colors as $colorItem)
+                                    <option value="{{ $colorItem->id }}" @selected(old('color_id') == $colorItem->id)>{{ $colorItem->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
-                    <div class="grid gap-6 md:grid-cols-3">
-                        <div>
-                            <label for="price" class="block text-sm font-semibold text-slate-700">Harga</label>
-                            <input id="price" type="number" name="price" value="{{ old('price') }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
-                        </div>
-                        <div>
-                            <label for="stock" class="block text-sm font-semibold text-slate-700">Stok awal</label>
-                            <input id="stock" type="number" name="stock" value="{{ old('stock', 0) }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
-                        </div>
-                        <div>
-                            <label for="min_stock" class="block text-sm font-semibold text-slate-700">Minimum stok</label>
-                            <input id="min_stock" type="number" name="min_stock" value="{{ old('min_stock', 5) }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
-                        </div>
+                    <div>
+                        <label for="price" class="block text-sm font-semibold text-slate-700">Harga</label>
+                        <input id="price" type="number" name="price" value="{{ old('price') }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
                     </div>
 
                     <div>
@@ -145,7 +150,7 @@
                     <h3 class="text-lg font-semibold text-slate-900">Panduan input</h3>
                     <div class="mt-4 space-y-4 text-sm text-slate-600">
                         <p>Isi nama produk dengan jelas agar slug otomatis mudah dibaca.</p>
-                        <p>Tentukan minimum stok agar dashboard dapat mendeteksi produk prioritas dengan benar.</p>
+                        <p>Stok dan minimum stok dikelola oleh karyawan di halaman manajemen stok.</p>
                         <p>Gunakan deskripsi singkat untuk membedakan model atau variasi produk.</p>
                     </div>
                 </div>

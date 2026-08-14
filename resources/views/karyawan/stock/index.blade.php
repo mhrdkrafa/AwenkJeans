@@ -44,6 +44,7 @@
                             <th class="pb-4 text-right font-bold text-slate-500 uppercase tracking-wider text-xs">Batas Minimum</th>
                             <th class="pb-4 text-right font-bold text-slate-500 uppercase tracking-wider text-xs">Stok Saat Ini</th>
                             <th class="pb-4 text-right font-bold text-slate-500 uppercase tracking-wider text-xs">Status</th>
+                            <th class="pb-4 text-right font-bold text-slate-500 uppercase tracking-wider text-xs">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-50">
@@ -51,8 +52,8 @@
                             <tr class="group transition hover:bg-slate-50/50">
                                 <td class="py-4 pr-4 font-bold text-slate-900">{{ $product->name }}</td>
                                 <td class="py-4 pr-4 text-slate-500">{{ optional($product->category)->name }} / {{ optional($product->size)->name ?? '-' }}</td>
-                                <td class="py-4 pr-4 text-right text-slate-500">{{ $product->min_stock }}</td>
-                                <td class="py-4 pr-4 text-right font-bold text-slate-900">{{ $product->stock }}</td>
+                                <td class="py-4 pr-4 text-right text-slate-500 font-semibold">{{ $product->min_stock }} unit</td>
+                                <td class="py-4 pr-4 text-right font-bold text-slate-900">{{ $product->stock }} unit</td>
                                 <td class="py-4 text-right">
                                     @if($product->stock <= 0)
                                         <span class="rounded-full bg-rose-50 px-3 py-1 text-xs font-bold text-rose-600">Kosong</span>
@@ -61,6 +62,11 @@
                                     @else
                                         <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-600">Aman</span>
                                     @endif
+                                </td>
+                                <td class="py-4 text-right">
+                                    <a href="{{ route('karyawan.stock.create') }}?product_id={{ $product->id }}" class="inline-flex items-center gap-1 rounded-lg bg-blue-50 border border-blue-200 px-2.5 py-1 text-xs font-bold text-blue-700 transition hover:bg-blue-100">
+                                        Atur Stok
+                                    </a>
                                 </td>
                             </tr>
                         @empty

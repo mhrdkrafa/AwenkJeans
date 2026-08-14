@@ -90,16 +90,25 @@
 
                     <div class="grid gap-6 md:grid-cols-2">
                         <div>
-                            <label for="brand" class="block text-sm font-semibold text-slate-700">Merek</label>
-                            <input id="brand" type="text" name="brand" value="{{ old('brand', $product->brand) }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                            <label for="brand_id" class="block text-sm font-semibold text-slate-700">Merek (Brand)</label>
+                            <select id="brand_id" name="brand_id" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                                <option value="">Pilih Merek</option>
+                                @foreach ($brands as $brandItem)
+                                    <option value="{{ $brandItem->id }}" @selected(old('brand_id', $product->brand_id) == $brandItem->id)>{{ $brandItem->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div>
-                            <label for="model" class="block text-sm font-semibold text-slate-700">Model</label>
-                            <input id="model" type="text" name="model" value="{{ old('model', $product->model) }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
-                        </div>
-                    </div>
 
-                    <div class="grid gap-6 md:grid-cols-2">
+                        <div>
+                            <label for="model_id" class="block text-sm font-semibold text-slate-700">Model Produk</label>
+                            <select id="model_id" name="model_id" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                                <option value="">Pilih Model</option>
+                                @foreach ($models as $modelItem)
+                                    <option value="{{ $modelItem->id }}" @selected(old('model_id', $product->model_id) == $modelItem->id)>{{ $modelItem->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div>
                             <label for="gender" class="block text-sm font-semibold text-slate-700">Jenis Kelamin</label>
                             <select id="gender" name="gender" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
@@ -108,25 +117,21 @@
                                 <option value="wanita" @selected(old('gender', $product->gender) == 'wanita')>Wanita</option>
                             </select>
                         </div>
+
                         <div>
-                            <label for="color" class="block text-sm font-semibold text-slate-700">Warna</label>
-                            <input id="color" type="text" name="color" value="{{ old('color', $product->color) }}" placeholder="Contoh: Biru Tua, Hitam, Abu-abu" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                            <label for="color_id" class="block text-sm font-semibold text-slate-700">Warna</label>
+                            <select id="color_id" name="color_id" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
+                                <option value="">Pilih Warna</option>
+                                @foreach ($colors as $colorItem)
+                                    <option value="{{ $colorItem->id }}" @selected(old('color_id', $product->color_id) == $colorItem->id)>{{ $colorItem->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
-                    <div class="grid gap-6 md:grid-cols-3">
-                        <div>
-                            <label for="price" class="block text-sm font-semibold text-slate-700">Harga</label>
-                            <input id="price" type="number" name="price" value="{{ old('price', $product->price) }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
-                        </div>
-                        <div>
-                            <label for="stock" class="block text-sm font-semibold text-slate-700">Stok</label>
-                            <input id="stock" type="number" name="stock" value="{{ old('stock', $product->stock) }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
-                        </div>
-                        <div>
-                            <label for="min_stock" class="block text-sm font-semibold text-slate-700">Minimum stok</label>
-                            <input id="min_stock" type="number" name="min_stock" value="{{ old('min_stock', $product->min_stock) }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
-                        </div>
+                    <div>
+                        <label for="price" class="block text-sm font-semibold text-slate-700">Harga</label>
+                        <input id="price" type="number" name="price" value="{{ old('price', $product->price) }}" class="mt-2 block w-full rounded-xl border-slate-300 focus:border-purple-600 focus:ring-purple-600">
                     </div>
 
                     <div>

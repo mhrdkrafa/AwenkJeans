@@ -84,6 +84,7 @@ class CatalogController extends Controller
                 return $v->size->name ?? '-';
             })->unique()->sort()->values()->toArray();
             $representative->variant_count = $variants->count();
+            $representative->min_stock_value = $variants->min('min_stock');
             // Ensure image is taken from any variant that has one
             if (!$representative->image) {
                 $withImage = $variants->firstWhere('image', '!=', null);
@@ -121,6 +122,7 @@ class CatalogController extends Controller
             })->map(function ($v) {
                 return $v->size->name ?? '-';
             })->unique()->sort()->values()->toArray();
+            $rep->min_stock_value = $variants->min('min_stock');
             if (!$rep->image) {
                 $withImage = $variants->firstWhere('image', '!=', null);
                 if ($withImage) $rep->image = $withImage->image;
@@ -144,6 +146,7 @@ class CatalogController extends Controller
             })->map(function ($v) {
                 return $v->size->name ?? '-';
             })->unique()->sort()->values()->toArray();
+            $rep->min_stock_value = $variants->min('min_stock');
             if (!$rep->image) {
                 $withImage = $variants->firstWhere('image', '!=', null);
                 if ($withImage) $rep->image = $withImage->image;

@@ -70,6 +70,24 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     @foreach($bestSellers as $product)
                         <div class="group bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col relative">
+                            {{-- Low Stock / Out of Stock Badge --}}
+                            @php
+                                $bTotalStock = $product->total_stock ?? $product->stock;
+                                $bMinStock = $product->min_stock_value ?? $product->min_stock ?? 5;
+                            @endphp
+                            @if($bTotalStock > 0 && $bTotalStock <= $bMinStock)
+                                <div class="absolute top-4 left-4 z-10 flex items-center gap-1 rounded-full bg-amber-500 text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow">
+                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    Stok Terbatas
+                                </div>
+                            @elseif($bTotalStock <= 0)
+                                <div class="absolute top-4 left-4 z-10 flex items-center gap-1 rounded-full bg-rose-600 text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow">
+                                    Stok Habis
+                                </div>
+                            @endif
+
                             {{-- Popular Ribbon/Badge (only show if >= 25 views) --}}
                             @if($product->views_count >= 25)
                             <div class="absolute top-4 right-4 z-10 flex items-center gap-1 rounded-full bg-[#1D4ED8] text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow">
@@ -230,6 +248,24 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
                     @foreach($products as $product)
                         <div class="group bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col relative">
+                            {{-- Low Stock / Out of Stock Badge --}}
+                            @php
+                                $totalStock = $product->total_stock ?? $product->stock;
+                                $minStock = $product->min_stock_value ?? $product->min_stock ?? 5;
+                            @endphp
+                            @if($totalStock > 0 && $totalStock <= $minStock)
+                                <div class="absolute top-4 left-4 z-10 flex items-center gap-1 rounded-full bg-amber-500 text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow">
+                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                    Stok Terbatas ({{ $product->stock }})
+                                </div>
+                            @elseif($totalStock <= 0)
+                                <div class="absolute top-4 left-4 z-10 flex items-center gap-1 rounded-full bg-rose-600 text-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow">
+                                    Stok Habis
+                                </div>
+                            @endif
+
                             {{-- Image Container --}}
                             <a href="{{ route('catalog.show', $product->slug) }}" class="relative aspect-[4/5] overflow-hidden bg-slate-100 block">
                                 @if($product->image)

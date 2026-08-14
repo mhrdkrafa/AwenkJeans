@@ -131,6 +131,7 @@
                                 <th class="pb-4 text-left font-bold text-slate-500 uppercase tracking-wider text-xs">Invoice</th>
                                 <th class="pb-4 text-left font-bold text-slate-500 uppercase tracking-wider text-xs">Status</th>
                                 <th class="pb-4 text-right font-bold text-slate-500 uppercase tracking-wider text-xs">Total</th>
+                                <th class="pb-4 text-right font-bold text-slate-500 uppercase tracking-wider text-xs">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50">
@@ -153,10 +154,16 @@
                                     <td class="py-3 text-right font-bold text-slate-900 text-xs">
                                         Rp {{ number_format($transaction->total_price, 0, ',', '.') }}
                                     </td>
+                                    <td class="py-3 text-right">
+                                        <a href="{{ route('owner.transactions.show', $transaction->id) }}" class="inline-flex items-center gap-1 rounded-lg bg-amber-50 border border-amber-200 px-3 py-1.5 text-[10px] font-bold text-amber-700 uppercase tracking-wider transition hover:bg-amber-100">
+                                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                                            Detail
+                                        </a>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3" class="py-12 text-center">
+                                    <td colspan="4" class="py-12 text-center">
                                         <p class="text-sm text-slate-500 font-medium">Belum ada transaksi.</p>
                                     </td>
                                 </tr>

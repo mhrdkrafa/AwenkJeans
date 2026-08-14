@@ -75,6 +75,30 @@
                                 </span>
                                 Manajemen Kategori
                             </a>
+                            <a href="{{ route('administrator.brands.index') }}" class="{{ request()->routeIs('administrator.brands.*') ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/20' : 'text-slate-300 hover:bg-white/5 hover:text-white' }} flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition">
+                                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                    </svg>
+                                </span>
+                                Manajemen Merek
+                            </a>
+                            <a href="{{ route('administrator.colors.index') }}" class="{{ request()->routeIs('administrator.colors.*') ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/20' : 'text-slate-300 hover:bg-white/5 hover:text-white' }} flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition">
+                                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                                    </svg>
+                                </span>
+                                Manajemen Warna
+                            </a>
+                            <a href="{{ route('administrator.product-models.index') }}" class="{{ request()->routeIs('administrator.product-models.*') ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/20' : 'text-slate-300 hover:bg-white/5 hover:text-white' }} flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition">
+                                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                    </svg>
+                                </span>
+                                Manajemen Model
+                            </a>
                             <a href="{{ route('administrator.users.index') }}" class="{{ request()->routeIs('administrator.users.*') ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/20' : 'text-slate-300 hover:bg-white/5 hover:text-white' }} flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition">
                                 <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
                                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">

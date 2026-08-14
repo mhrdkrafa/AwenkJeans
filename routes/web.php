@@ -2,18 +2,21 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CatalogController;
-use App\Http\Controllers\Admin\DashboardController as KaryawanDashboardController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\StockController;
-use App\Http\Controllers\Admin\TransactionController;
-use App\Http\Controllers\Admin\ReviewController;
-use App\Http\Controllers\Admin\VisitorController;
-use App\Http\Controllers\Admin\ReportController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\ComplaintController as AdminComplaintController;
+use App\Http\Controllers\Karyawan\DashboardController as KaryawanDashboardController;
+use App\Http\Controllers\Karyawan\ProductController as KaryawanProductController;
+use App\Http\Controllers\Karyawan\CategoryController as KaryawanCategoryController;
+use App\Http\Controllers\Karyawan\StockController;
+use App\Http\Controllers\Karyawan\TransactionController as KaryawanTransactionController;
+use App\Http\Controllers\Karyawan\ReviewController as KaryawanReviewController;
+use App\Http\Controllers\Karyawan\VisitorController;
+use App\Http\Controllers\Karyawan\ReportController as KaryawanReportController;
+use App\Http\Controllers\Karyawan\ComplaintController as KaryawanComplaintController;
 use App\Http\Controllers\Administrator\ProductController as AdministratorProductController;
 use App\Http\Controllers\Administrator\CategoryController as AdministratorCategoryController;
+use App\Http\Controllers\Administrator\BrandController as AdministratorBrandController;
+use App\Http\Controllers\Administrator\ColorController as AdministratorColorController;
+use App\Http\Controllers\Administrator\ProductModelController as AdministratorProductModelController;
+use App\Http\Controllers\Administrator\UserController as AdministratorUserController;
 use App\Http\Controllers\Kasir\DashboardController as KasirDashboardController;
 use App\Http\Controllers\Kasir\POSController;
 use App\Http\Controllers\Owner\DashboardController as OwnerDashboardController;
@@ -66,16 +69,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// ===================== KARYAWAN ROUTES (sebelumnya Admin) =====================
+// ===================== KARYAWAN ROUTES =====================
 Route::middleware(['auth', 'verified', 'role:karyawan'])->prefix('karyawan')->name('karyawan.')->group(function () {
     Route::get('/dashboard', [KaryawanDashboardController::class, 'index'])->name('dashboard');
 
     // Products (view-only: karyawan hanya bisa lihat daftar dan detail)
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/products', [KaryawanProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{product}', [KaryawanProductController::class, 'show'])->name('products.show');
 
     // Categories (view-only: karyawan hanya bisa lihat daftar)
-    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories', [KaryawanCategoryController::class, 'index'])->name('categories.index');
 
     // Stock Management
     Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
@@ -84,48 +87,51 @@ Route::middleware(['auth', 'verified', 'role:karyawan'])->prefix('karyawan')->na
     Route::get('/stock/movements', [StockController::class, 'movements'])->name('stock.movements');
 
     // Transactions
-    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
-    Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
-    Route::get('/transactions/{transaction}/receipt-pdf', [TransactionController::class, 'receiptPdf'])->name('transactions.receipt.pdf');
+    Route::get('/transactions', [KaryawanTransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{transaction}', [KaryawanTransactionController::class, 'show'])->name('transactions.show');
+    Route::get('/transactions/{transaction}/receipt-pdf', [KaryawanTransactionController::class, 'receiptPdf'])->name('transactions.receipt.pdf');
 
     // Reviews
-    Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
-    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::get('/reviews', [KaryawanReviewController::class, 'index'])->name('reviews.index');
+    Route::delete('/reviews/{review}', [KaryawanReviewController::class, 'destroy'])->name('reviews.destroy');
 
     // Visitor Tracking
     Route::get('/visitors', [VisitorController::class, 'index'])->name('visitors.index');
 
     // Complaints Management - Karyawan mengelola komplain
-    Route::get('/complaints', [AdminComplaintController::class, 'index'])->name('complaints.index');
-    Route::get('/complaints/{complaint}', [AdminComplaintController::class, 'show'])->name('complaints.show');
-    Route::put('/complaints/{complaint}', [AdminComplaintController::class, 'update'])->name('complaints.update');
-    Route::post('/complaints/{complaint}/reply', [AdminComplaintController::class, 'reply'])->name('complaints.reply');
+    Route::get('/complaints', [KaryawanComplaintController::class, 'index'])->name('complaints.index');
+    Route::get('/complaints/{complaint}', [KaryawanComplaintController::class, 'show'])->name('complaints.show');
+    Route::put('/complaints/{complaint}', [KaryawanComplaintController::class, 'update'])->name('complaints.update');
+    Route::post('/complaints/{complaint}/reply', [KaryawanComplaintController::class, 'reply'])->name('complaints.reply');
 
     // Reports - Karyawan juga bisa melihat laporan
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
-    Route::get('/reports/stock', [ReportController::class, 'stock'])->name('reports.stock');
-    Route::get('/reports/movements', [ReportController::class, 'movements'])->name('reports.movements');
-    Route::get('/reports/sales/pdf', [ReportController::class, 'salesPdf'])->name('reports.sales.pdf');
-    Route::get('/reports/stock/pdf', [ReportController::class, 'stockPdf'])->name('reports.stock.pdf');
-    Route::get('/reports/movements/pdf', [ReportController::class, 'movementsPdf'])->name('reports.movements.pdf');
+    Route::get('/reports', [KaryawanReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/sales', [KaryawanReportController::class, 'sales'])->name('reports.sales');
+    Route::get('/reports/stock', [KaryawanReportController::class, 'stock'])->name('reports.stock');
+    Route::get('/reports/movements', [KaryawanReportController::class, 'movements'])->name('reports.movements');
+    Route::get('/reports/sales/pdf', [KaryawanReportController::class, 'salesPdf'])->name('reports.sales.pdf');
+    Route::get('/reports/stock/pdf', [KaryawanReportController::class, 'stockPdf'])->name('reports.stock.pdf');
+    Route::get('/reports/movements/pdf', [KaryawanReportController::class, 'movementsPdf'])->name('reports.movements.pdf');
 });
 
 // ===================== OWNER ROUTES (View-only: Laporan) =====================
 Route::middleware(['auth', 'verified', 'role:owner'])->prefix('owner')->name('owner.')->group(function () {
     Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
 
+    // Detail Transaksi - Owner bisa melihat detail
+    Route::get('/transactions/{transaction}', [OwnerDashboardController::class, 'showTransaction'])->name('transactions.show');
+
     // Laporan - Owner hanya melihat
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
-    Route::get('/reports/stock', [ReportController::class, 'stock'])->name('reports.stock');
-    Route::get('/reports/movements', [ReportController::class, 'movements'])->name('reports.movements');
-    Route::get('/reports/sales/pdf', [ReportController::class, 'salesPdf'])->name('reports.sales.pdf');
-    Route::get('/reports/stock/pdf', [ReportController::class, 'stockPdf'])->name('reports.stock.pdf');
-    Route::get('/reports/movements/pdf', [ReportController::class, 'movementsPdf'])->name('reports.movements.pdf');
+    Route::get('/reports', [KaryawanReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/sales', [KaryawanReportController::class, 'sales'])->name('reports.sales');
+    Route::get('/reports/stock', [KaryawanReportController::class, 'stock'])->name('reports.stock');
+    Route::get('/reports/movements', [KaryawanReportController::class, 'movements'])->name('reports.movements');
+    Route::get('/reports/sales/pdf', [KaryawanReportController::class, 'salesPdf'])->name('reports.sales.pdf');
+    Route::get('/reports/stock/pdf', [KaryawanReportController::class, 'stockPdf'])->name('reports.stock.pdf');
+    Route::get('/reports/movements/pdf', [KaryawanReportController::class, 'movementsPdf'])->name('reports.movements.pdf');
 });
 
-// ===================== ADMINISTRATOR ROUTES (Produk, Kategori, Kelola Akun) =====================
+// ===================== ADMINISTRATOR ROUTES (Produk, Kategori, Merek, Warna, Model, Kelola Akun) =====================
 Route::middleware(['auth', 'verified', 'role:administrator'])->prefix('administrator')->name('administrator.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Administrator\DashboardController::class, 'index'])->name('dashboard');
 
@@ -135,8 +141,17 @@ Route::middleware(['auth', 'verified', 'role:administrator'])->prefix('administr
     // Manajemen Kategori - Hanya Administrator
     Route::resource('categories', AdministratorCategoryController::class)->except(['show']);
 
+    // Manajemen Merek - Hanya Administrator
+    Route::resource('brands', AdministratorBrandController::class)->except(['show']);
+
+    // Manajemen Warna - Hanya Administrator
+    Route::resource('colors', AdministratorColorController::class)->except(['show']);
+
+    // Manajemen Model Produk - Hanya Administrator
+    Route::resource('product-models', AdministratorProductModelController::class)->except(['show']);
+
     // Manajemen Akun - Hanya Administrator
-    Route::resource('users', UserController::class);
+    Route::resource('users', AdministratorUserController::class);
 });
 
 // ===================== KASIR ROUTES =====================

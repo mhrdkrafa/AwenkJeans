@@ -48,6 +48,9 @@
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Produk</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Kategori</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Merek</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Model</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Warna</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Ukuran</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Harga</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Total Stok</th>
@@ -78,6 +81,9 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-slate-600">{{ $product->category->name }}</td>
+                                <td class="px-6 py-4 text-sm text-slate-600">{{ optional($product->brandRelation)->name ?: ($product->brand ?: '-') }}</td>
+                                <td class="px-6 py-4 text-sm text-slate-600">{{ optional($product->modelRelation)->name ?: ($product->model ?: '-') }}</td>
+                                <td class="px-6 py-4 text-sm text-slate-600">{{ optional($product->colorRelation)->name ?: ($product->color ?: '-') }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex flex-wrap gap-1">
                                         @foreach($product->available_sizes ?? [] as $sz)
@@ -139,6 +145,9 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-3 text-sm text-slate-400">—</td>
+                                        <td class="px-6 py-3 text-sm text-slate-400">—</td>
+                                        <td class="px-6 py-3 text-sm text-slate-400">—</td>
+                                        <td class="px-6 py-3 text-sm text-slate-400">—</td>
                                         <td class="px-6 py-3">
                                             <span class="inline-flex items-center rounded-lg bg-purple-100 px-2.5 py-0.5 text-xs font-bold text-purple-700">{{ $variant['size_name'] }}</span>
                                         </td>
@@ -169,7 +178,7 @@
                             @endif
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-10 text-center text-sm text-slate-500">Belum ada produk yang tersimpan.</td>
+                                <td colspan="9" class="px-6 py-10 text-center text-sm text-slate-500">Belum ada produk yang tersimpan.</td>
                             </tr>
                         @endforelse
                     </tbody>

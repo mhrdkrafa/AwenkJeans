@@ -128,13 +128,16 @@ class POSController extends Controller
                     ]);
 
                     $product->decrement('stock', $item['qty']);
+                    $product->refresh();
 
                     StockMovement::create([
                         'product_id' => $product->id,
+                        'user_id' => auth()->id(),
                         'type' => 'out',
                         'quantity' => $item['qty'],
                         'description' => "Penjualan: {$transaction->invoice_number} - Pelanggan: {$request->input('customer_name')}",
                         'reference_id' => $transaction->id,
+                        'stock_after' => $product->stock,
                     ]);
                 }
 

@@ -9,6 +9,9 @@ class Product extends Model
     protected $fillable = [
         'category_id',
         'size_id',
+        'brand_id',
+        'model_id',
+        'color_id',
         'name',
         'slug',
         'brand',
@@ -30,6 +33,21 @@ class Product extends Model
     public function size()
     {
         return $this->belongsTo(Size::class);
+    }
+
+    public function brandRelation()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
+    public function modelRelation()
+    {
+        return $this->belongsTo(ProductModel::class, 'model_id');
+    }
+
+    public function colorRelation()
+    {
+        return $this->belongsTo(Color::class, 'color_id');
     }
 
     public function stockMovements()

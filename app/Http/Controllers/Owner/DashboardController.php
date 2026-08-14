@@ -59,4 +59,10 @@ class DashboardController extends Controller
             'monthlyChartLabels', 'monthlyChartData'
         ));
     }
+
+    public function showTransaction(Transaction $transaction)
+    {
+        $transaction->load(['user', 'details.product.category', 'details.product.size']);
+        return view('owner.transactions.show', compact('transaction'));
+    }
 }

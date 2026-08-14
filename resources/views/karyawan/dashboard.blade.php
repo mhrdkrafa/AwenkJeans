@@ -310,15 +310,23 @@
                             </span>
                         </div>
                         <div class="mt-4 flex items-baseline gap-1">
-                            <span class="text-2xl font-black text-slate-900">{{ number_format($movement->quantity, 0, ',', '.') }}</span>
+                            <span class="text-2xl font-black {{ $movement->type === 'in' ? 'text-emerald-600' : 'text-amber-600' }}">{{ number_format($movement->quantity, 0, ',', '.') }}</span>
                             <span class="text-xs font-bold text-slate-500">UNIT</span>
                         </div>
                         <p class="mt-2 text-xs font-medium text-slate-500 leading-relaxed line-clamp-2">{{ $movement->description ?: 'Perubahan stok manual.' }}</p>
-                        <div class="mt-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            {{ $movement->created_at->format('d M Y H:i') }}
+                        <div class="mt-4 flex items-center justify-between">
+                            <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ $movement->created_at->format('d M Y H:i') }}
+                            </div>
+                            <div class="flex items-center gap-1 text-[10px] font-semibold text-slate-400">
+                                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                {{ optional($movement->user)->name ?? 'Sistem' }}
+                            </div>
                         </div>
                     </div>
                 @empty

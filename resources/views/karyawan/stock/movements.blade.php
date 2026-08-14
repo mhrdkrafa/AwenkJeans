@@ -24,6 +24,8 @@
                         <th class="pb-4 text-left font-bold text-slate-500 uppercase tracking-wider text-xs">Produk</th>
                         <th class="pb-4 text-center font-bold text-slate-500 uppercase tracking-wider text-xs">Tipe</th>
                         <th class="pb-4 text-right font-bold text-slate-500 uppercase tracking-wider text-xs">Jumlah</th>
+                        <th class="pb-4 text-right font-bold text-slate-500 uppercase tracking-wider text-xs">Stok Terkini</th>
+                        <th class="pb-4 text-left font-bold text-slate-500 uppercase tracking-wider text-xs">Oleh</th>
                         <th class="pb-4 text-left font-bold text-slate-500 uppercase tracking-wider text-xs">Keterangan</th>
                     </tr>
                 </thead>
@@ -39,18 +41,22 @@
                                     <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-600">OUT</span>
                                 @endif
                             </td>
-                            <td class="py-4 pr-4 text-right font-bold text-slate-900">
-                                @if($movement->type === 'in')
-                                    <span class="text-emerald-600">+{{ $movement->quantity }}</span>
+                            <td class="py-4 pr-4 text-right font-bold">
+                                <span class="{{ $movement->type === 'in' ? 'text-emerald-600' : 'text-amber-600' }}">{{ $movement->quantity }}</span>
+                            </td>
+                            <td class="py-4 pr-4 text-right">
+                                @if($movement->stock_after !== null)
+                                    <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700">{{ $movement->stock_after }} stok</span>
                                 @else
-                                    <span class="text-amber-600">-{{ $movement->quantity }}</span>
+                                    <span class="text-slate-400">-</span>
                                 @endif
                             </td>
+                            <td class="py-4 pr-4 text-sm text-slate-600">{{ optional($movement->user)->name ?? 'Sistem' }}</td>
                             <td class="py-4 text-slate-500 max-w-xs truncate">{{ $movement->description }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="py-12 text-center text-slate-500">Belum ada riwayat pergerakan stok.</td>
+                            <td colspan="7" class="py-12 text-center text-slate-500">Belum ada riwayat pergerakan stok.</td>
                         </tr>
                     @endforelse
                 </tbody>
